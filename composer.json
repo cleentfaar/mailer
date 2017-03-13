@@ -22,7 +22,8 @@
   "require-dev": {
     "phpunit/phpunit": "^5.5",
     "beberlei/assert": "^2.7",
-    "friendsofphp/php-cs-fixer": "^2.0"
+    "friendsofphp/php-cs-fixer": "^2.0",
+    "adlawson/vfs": "^0.12"
   },
   "suggest": {
     "swiftmailer/swiftmailer": "If you want to use the (default) Swiftmailer driver"

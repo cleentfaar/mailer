@@ -7,8 +7,9 @@ namespace CL\Mailer\Tests;
 use CL\Mailer\Driver\DriverInterface;
 use CL\Mailer\Mailer;
 use CL\Mailer\Message\MessageHeaderInterface;
+use CL\Mailer\Message\MessageResolver;
+use CL\Mailer\Message\ResolvedMessage;
 use CL\Mailer\Type\TypeInterface;
-use CL\Mailer\Type\TypeRegistry;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -24,9 +25,9 @@ class MailerTest extends TestCase
     private $mailer;
 
     /**
-     * @var ObjectProphecy|TypeRegistry
+     * @var ObjectProphecy|MessageResolver
      */
-    private $typeRegistry;
+    private $messageResolver;
 
     /**
      * @var ObjectProphecy|DriverInterface
@@ -38,11 +39,11 @@ class MailerTest extends TestCase
      */
     protected function setUp()
     {
-        $this->typeRegistry = $this->prophesize(TypeRegistry::class);
+        $this->messageResolver = $this->prophesize(MessageResolver::class);
         $this->driver = $this->prophesize(DriverInterface::class);
 
         $this->mailer = new Mailer(
-            $this->typeRegistry->reveal(),
+            $this->messageResolver->reveal(),
             $this->driver->reveal()
         );
     }
@@ -54,21 +55,14 @@ class MailerTest extends TestCase
     {
         $options = ['foo' => 'bar'];
 
-        $type = $this->prophesize(TypeInterface::class);
-        $type->buildMessage(Argument::type(MessageHeaderInterface::class), $options)
+        $resolvedMessage = $this->prophesize(ResolvedMessage::class);
+
+        $this->messageResolver->resolve(self::TYPE, $options)
             ->shouldBeCalledTimes(1)
+            ->willReturn($resolvedMessage)
         ;
 
-        $type->configureOptions(Argument::type(OptionsResolver::class))
-            ->shouldBeCalledTimes(1)
-        ;
-
-        $this->typeRegistry->get(self::TYPE)
-            ->shouldBeCalledTimes(1)
-            ->willReturn($type)
-        ;
-
-        $this->driver->send(Argument::type(MessageHeaderInterface::class))
+        $this->driver->send($resolvedMessage)
             ->shouldBeCalledTimes(1)
             ->willReturn(true)
         ;

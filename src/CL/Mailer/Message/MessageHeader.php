@@ -47,9 +47,25 @@ class MessageHeader implements MessageHeaderInterface
     /**
      * @inheritdoc
      */
+    public function getFrom(): array
+    {
+        return $this->from;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function addTo(Address $address)
     {
         $this->to[] = $address;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTo(): array
+    {
+        return $this->to;
     }
 
     /**
@@ -63,9 +79,25 @@ class MessageHeader implements MessageHeaderInterface
     /**
      * @inheritdoc
      */
+    public function getCc(): array
+    {
+        return $this->cc;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function addBcc(Address $address)
     {
         $this->bcc[] = $address;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getBcc(): array
+    {
+        return $this->bcc;
     }
 
     /**
@@ -79,8 +111,24 @@ class MessageHeader implements MessageHeaderInterface
     /**
      * @inheritdoc
      */
+    public function getReplyTo(): array
+    {
+        return $this->replyTo;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function setSubject(string $subject = null)
     {
         $this->subject = $subject;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSubject(): ?string
+    {
+        return $this->subject;
     }
 }

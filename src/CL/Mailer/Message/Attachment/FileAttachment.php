@@ -22,17 +22,17 @@ class FileAttachment implements AttachmentInterface
     /**
      * @inheritdoc
      */
-    public function getData(): string
+    public function getName(): string
     {
-        return file_get_contents($this->file->getRealPath());
+        return $this->file->getRealPath();
     }
 
     /**
      * @inheritdoc
      */
-    public function getName(): string
+    public function getData(): string
     {
-        return $this->file->getRealPath();
+        return file_get_contents($this->file->getRealPath());
     }
 
     /**
