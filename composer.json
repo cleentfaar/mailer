@@ -26,7 +26,7 @@
     "adlawson/vfs": "^0.12"
   },
   "suggest": {
-    "swiftmailer/swiftmailer": "If you want to use the (default) Swiftmailer driver"
+    "cleentfaar/mailer-swiftmailer": "If you want to use the (recommended) Swiftmailer driver for sending e-mails"
   },
   "autoload": {
     "psr-4": {
