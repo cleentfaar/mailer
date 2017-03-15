@@ -25,15 +25,15 @@ class BodyTest extends TestCase
     /**
      * @test
      */
-    public function it_can_build_a_complete_message()
+    public function its_getters_return_the_expected_values()
     {
         $part = $this->prophesize(Body\Part\PartInterface::class)->reveal();
         $attachment = $this->prophesize(Body\Attachment\AttachmentInterface::class)->reveal();
 
-        $this->body->addPart($part);
+        $this->body->setMainPart($part);
         $this->body->addAttachment($attachment);
 
-        $this->assertSame([$part], $this->body->getParts());
+        $this->assertSame($part, $this->body->getMainPart());
         $this->assertSame([$attachment], $this->body->getAttachments());
     }
 }

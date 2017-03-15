@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CL\Mailer\Tests;
 
-use CL\Mailer\Message\ResolvedMessage;
 use CL\Mailer\MessageResolver;
 use CL\Mailer\MessageResolverInterface;
+use CL\Mailer\ResolvedMessage;
 use CL\Mailer\TypeInterface;
 use CL\Mailer\TypeRegistry;
 use CL\Mailer\TypeRegistryInterface;

@@ -6,6 +6,8 @@ namespace CL\Mailer\Tests;
 
 use CL\Mailer\Message\BodyInterface;
 use CL\Mailer\Message\HeaderInterface;
+use CL\Mailer\Message\ResolvedBodyInterface;
+use CL\Mailer\Message\ResolvedHeaderInterface;
 use CL\Mailer\ResolvedMessage;
 use PHPUnit\Framework\TestCase;
 
@@ -14,14 +16,14 @@ class ResolvedMessageTest extends TestCase
     /**
      * @test
      */
-    public function its_getters_return_the_expected_values()
+    public function it_can_be_constructed_from_a_given_header_and_body()
     {
         $header = $this->prophesize(HeaderInterface::class)->reveal();
         $body = $this->prophesize(BodyInterface::class)->reveal();
 
-        $resolvedMessage = new ResolvedMessage($header, $body);
+        $resolvedMessage = ResolvedMessage::fromHeaderAndBody($header, $body);
 
-        $this->assertSame($header, $resolvedMessage->getHeader());
-        $this->assertSame($body, $resolvedMessage->getBody());
+        $this->assertInstanceOf(ResolvedHeaderInterface::class, $resolvedMessage->getHeader());
+        $this->assertInstanceOf(ResolvedBodyInterface::class, $resolvedMessage->getBody());
     }
 }
