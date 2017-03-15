@@ -1,4 +1,9 @@
 language: php
+
 php:
-- 7.1
-script: composer install && vendor/bin/phpunit
+  - 7.1
+
+install:
+  - composer install --no-interaction --prefer-source
+
+script: vendor/bin/phpunit
