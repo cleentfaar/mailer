@@ -1,9 +1,11 @@
 <?php
 
-namespace CL\Mailer\Tests\Type;
+declare(strict_types=1);
 
-use CL\Mailer\Type\TypeInterface;
-use CL\Mailer\Type\TypeRegistry;
+namespace CL\Mailer\Tests;
+
+use CL\Mailer\TypeInterface;
+use CL\Mailer\TypeRegistry;
 use PHPUnit\Framework\TestCase;
 
 class TypeRegistryTest extends TestCase

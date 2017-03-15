@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace CL\Mailer\Tests\Message;
 
-use CL\Mailer\Message\Address;
-use CL\Mailer\Message\MessageHeader;
+use CL\Mailer\Message\Header;
+use CL\Mailer\Message\Header\Address;
 use PHPUnit\Framework\TestCase;
 
-class MessageHeaderTest extends TestCase
+class HeaderTest extends TestCase
 {
     /**
-     * @var MessageHeader
+     * @var Header
      */
     private $header;
 
@@ -20,7 +20,7 @@ class MessageHeaderTest extends TestCase
      */
     protected function setUp()
     {
-        $this->header = new MessageHeader();
+        $this->header = new Header();
     }
 
     /**

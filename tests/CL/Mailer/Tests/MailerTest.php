@@ -6,14 +6,11 @@ namespace CL\Mailer\Tests;
 
 use CL\Mailer\Driver\DriverInterface;
 use CL\Mailer\Mailer;
-use CL\Mailer\Message\MessageHeaderInterface;
-use CL\Mailer\Message\MessageResolver;
-use CL\Mailer\Message\ResolvedMessage;
-use CL\Mailer\Type\TypeInterface;
+use CL\Mailer\MessageResolver;
+use CL\Mailer\MessageResolverInterface;
+use CL\Mailer\ResolvedMessage;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MailerTest extends TestCase
 {
@@ -25,7 +22,7 @@ class MailerTest extends TestCase
     private $mailer;
 
     /**
-     * @var ObjectProphecy|MessageResolver
+     * @var ObjectProphecy|MessageResolverInterface
      */
     private $messageResolver;
 
@@ -51,9 +48,10 @@ class MailerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_send_a_message_by_type()
+    public function it_can_send_a_message_by_type_and_return_driver_result()
     {
         $options = ['foo' => 'bar'];
+        $result = true;
 
         $resolvedMessage = $this->prophesize(ResolvedMessage::class);
 
@@ -64,9 +62,9 @@ class MailerTest extends TestCase
 
         $this->driver->send($resolvedMessage)
             ->shouldBeCalledTimes(1)
-            ->willReturn(true)
+            ->willReturn($result)
         ;
 
-        $this->assertTrue($this->mailer->send(self::TYPE, $options));
+        $this->assertSame($result, $this->mailer->send(self::TYPE, $options));
     }
 }

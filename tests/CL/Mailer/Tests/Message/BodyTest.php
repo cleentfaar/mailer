@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace CL\Mailer\Tests\Message;
 
-use CL\Mailer\Message\Attachment\AttachmentInterface;
-use CL\Mailer\Message\MessageBody;
-use CL\Mailer\Message\Part\PartInterface;
+use CL\Mailer\Message\Body;
 use PHPUnit\Framework\TestCase;
 
-class MessageBodyTest extends TestCase
+class BodyTest extends TestCase
 {
     /**
-     * @var MessageBody
+     * @var Body
      */
     private $body;
 
@@ -21,7 +19,7 @@ class MessageBodyTest extends TestCase
      */
     protected function setUp()
     {
-        $this->body = new MessageBody();
+        $this->body = new Body();
     }
 
     /**
@@ -29,8 +27,8 @@ class MessageBodyTest extends TestCase
      */
     public function it_can_build_a_complete_message()
     {
-        $part = $this->prophesize(PartInterface::class)->reveal();
-        $attachment = $this->prophesize(AttachmentInterface::class)->reveal();
+        $part = $this->prophesize(Body\Part\PartInterface::class)->reveal();
+        $attachment = $this->prophesize(Body\Attachment\AttachmentInterface::class)->reveal();
 
         $this->body->addPart($part);
         $this->body->addAttachment($attachment);

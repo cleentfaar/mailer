@@ -4,30 +4,32 @@ declare(strict_types=1);
 
 namespace CL\Mailer\Message;
 
-class MessageHeader implements MessageHeaderInterface
+use CL\Mailer\Message\Header\AddressInterface;
+
+class Header implements HeaderInterface
 {
     /**
-     * @var Address[]
+     * @var AddressInterface[]
      */
     private $from = [];
 
     /**
-     * @var Address[]
+     * @var AddressInterface[]
      */
     private $to = [];
 
     /**
-     * @var Address[]
+     * @var AddressInterface[]
      */
     private $cc = [];
 
     /**
-     * @var Address[]
+     * @var AddressInterface[]
      */
     private $bcc = [];
 
     /**
-     * @var Address[]
+     * @var AddressInterface[]
      */
     private $replyTo = [];
 
@@ -39,7 +41,7 @@ class MessageHeader implements MessageHeaderInterface
     /**
      * @inheritdoc
      */
-    public function addFrom(Address $address)
+    public function addFrom(AddressInterface $address)
     {
         $this->from[] = $address;
     }
@@ -55,7 +57,7 @@ class MessageHeader implements MessageHeaderInterface
     /**
      * @inheritdoc
      */
-    public function addTo(Address $address)
+    public function addTo(AddressInterface $address)
     {
         $this->to[] = $address;
     }
@@ -71,7 +73,7 @@ class MessageHeader implements MessageHeaderInterface
     /**
      * @inheritdoc
      */
-    public function addCc(Address $address)
+    public function addCc(AddressInterface $address)
     {
         $this->cc[] = $address;
     }
@@ -87,7 +89,7 @@ class MessageHeader implements MessageHeaderInterface
     /**
      * @inheritdoc
      */
-    public function addBcc(Address $address)
+    public function addBcc(AddressInterface $address)
     {
         $this->bcc[] = $address;
     }
@@ -103,7 +105,7 @@ class MessageHeader implements MessageHeaderInterface
     /**
      * @inheritdoc
      */
-    public function addReplyTo(Address $address)
+    public function addReplyTo(AddressInterface $address)
     {
         $this->replyTo[] = $address;
     }

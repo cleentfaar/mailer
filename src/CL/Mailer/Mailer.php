@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CL\Mailer;
 
 use CL\Mailer\Driver\DriverInterface;
-use CL\Mailer\Message\MessageResolver;
 
 /**
  * Wrapper combining the message resolver and driver allowing users to
@@ -14,7 +13,7 @@ use CL\Mailer\Message\MessageResolver;
 class Mailer implements MailerInterface
 {
     /**
-     * @var MessageResolver
+     * @var MessageResolverInterface
      */
     private $messageResolver;
 
@@ -24,11 +23,11 @@ class Mailer implements MailerInterface
     private $driver;
 
     /**
-     * @param MessageResolver $messageResolver
-     * @param DriverInterface $driver
+     * @param MessageResolverInterface $messageResolver
+     * @param DriverInterface          $driver
      */
     public function __construct(
-        MessageResolver $messageResolver,
+        MessageResolverInterface $messageResolver,
         DriverInterface $driver
     ) {
         $this->messageResolver = $messageResolver;

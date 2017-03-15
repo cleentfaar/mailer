@@ -1,6 +1,6 @@
 <?php
 
-namespace CL\Mailer\Type;
+namespace CL\Mailer;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

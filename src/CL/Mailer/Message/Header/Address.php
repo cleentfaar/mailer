@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CL\Mailer\Message;
+namespace CL\Mailer\Message\Header;
 
-class Address
+class Address implements AddressInterface
 {
     /**
      * @var string
@@ -27,7 +27,7 @@ class Address
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getEmail() : string
     {
@@ -35,7 +35,7 @@ class Address
     }
 
     /**
-     * @return string|null
+     * @inheritdoc
      */
     public function getName(): ?string
     {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CL\Mailer\Driver;
 
-use CL\Mailer\Message\ResolvedMessage;
+use CL\Mailer\ResolvedMessageInterface;
 
 interface DriverInterface
 {
@@ -18,9 +18,9 @@ interface DriverInterface
      * Also note that after a message is successfully sent, it may still fail
      * to arrive due to intermittent issues or simply because of a non-existent recipient.
      *
-     * @param ResolvedMessage $message
+     * @param ResolvedMessageInterface $message
      *
-     * @return bool Whether the type's message was successfully sent or not.
+     * @return bool Whether the message was successfully sent or not.
      */
-    public function send(ResolvedMessage $message): bool;
+    public function send(ResolvedMessageInterface $message): bool;
 }

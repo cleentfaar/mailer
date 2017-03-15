@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CL\Mailer\Type;
+namespace CL\Mailer;
 
-use Closure;
 use OutOfBoundsException;
 
-class TypeRegistry
+class TypeRegistry implements TypeRegistryInterface
 {
     /**
      * @var TypeInterface[]
@@ -15,32 +14,17 @@ class TypeRegistry
     private $types = [];
 
     /**
-     * @var Closure|null
-     */
-    private $namingStrategy;
-
-    /**
-     * @param Closure|null $namingStrategy
-     */
-    public function __construct(Closure $namingStrategy = null)
-    {
-        $this->namingStrategy = $namingStrategy ?: function (TypeInterface $type) { return get_class($type); };
-    }
-
-    /**
-     * @param TypeInterface $type
+     * @inheritdoc
      */
     public function register(TypeInterface $type)
     {
-        $name = call_user_func_array($this->namingStrategy, [$type]);
+        $name = get_class($type);
 
         $this->types[$name] = $type;
     }
 
     /**
-     * @param string $type
-     *
-     * @return TypeInterface
+     * @inheritdoc
      */
     public function get(string $type): TypeInterface
     {
