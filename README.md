@@ -9,6 +9,7 @@
 1. [Introduction](docs/introduction.md)
 1. [Installation](docs/installation.md)
 1. [Getting started](docs/getting-started.md)
+1. [Advanced usage](docs/advanced-usage.md)
 1. [Contributing](docs/contributing.md)
 
 ### Packages depending on this library

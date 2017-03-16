@@ -5,15 +5,14 @@ a welcome email to any user signing up on our website.
 
 ### Creating a type
 
-First, we create class implementing `TypeInterface`, here's a (extremely simplified)
-way of doing this:
+First, we create class implementing `TypeInterface`, or in our (simplified) case, extend `AbstractType`:
 
 ```php
 <?php
 
 namespace Acme\Mailer\Type;
 
-use CL\Mailer\TypeInterface;
+use CL\Mailer\AbstractType;
 use CL\Mailer\Message\BodyInterface;
 use CL\Mailer\Message\HeaderInterface;
 use CL\Mailer\Message\Header\Address;
@@ -21,33 +20,34 @@ use CL\Mailer\Message\Body\Attachment\FileAttachment;
 use CL\Mailer\Message\Body\Part\HtmlPart;
 use CL\Mailer\Message\Body\Part\PlainTextPart;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Templating\EngineInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
-class WelcomeUserType implements TypeInterface
+class WelcomeUserType extends AbstractType
 {
     /**
      * @inheritdoc 
      */
-    public function buildHeader(HeaderInterface $header, array $options)
+    public function buildHeader(HeaderInterface $header, TranslatorInterface $translator, array $options)
     {
         $header->addTo(new Address('john@doe.com', 'John Doe'));
         
-        // optionally, you may want to set a from or
-        // reply-to address for the recipient to reply to
-        $header->addFrom(new Address('support@acme.com', 'Acme Support'));
-        // or...
-        $header->addReplyTo(new Address('support@acme.com', 'Acme Support'));
+        $header->setSender(new Address('support@acme.com', 'Acme Support'));
+        
+        // example of using translation for subjects
+        $header->setSubject($translator->trans('welcome_user.subject', [], 'mail'));
     }
 
     /**
      * @inheritdoc 
      */        
-    public function buildBody(BodyInterface $body, array $options)
+    public function buildBody(BodyInterface $body, EngineInterface $templating, array $options)
     {
-        $body->setMainPart(new HtmlPart('<h1>Welcome!</h1><p>You rock!</p>'));
+        $body->setMainPart(new HtmlPart($templating->render('acme/mails/welcome_user.html.twig')));
         
         // optionally, you may want to provide a
         // plain-text version of your email
-        $body->setAlternativePart(new PlainTextPart('Welcome! You rock!'));
+        $body->setAlternativePart(new PlainTextPart($templating->render('acme/mails/welcome_user.txt.twig')));
         
         // optionally, you may want to add an attachment
         $attachment = new FileAttachment(new File('/path/to/attachment')); 
@@ -122,13 +122,14 @@ use CL\Mailer\AbstractType;
 use CL\Mailer\Message\HeaderInterface;
 use CL\Mailer\Message\Header\Address;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class WelcomeUserType extends AbstractType
 {
     /**
      * @inheritdoc 
      */
-    public function buildHeader(HeaderInterface $header, array $options)
+    public function buildHeader(HeaderInterface $header, TranslatorInterface $translator, array $options)
     {
         $header->addTo($options['to']);
         
@@ -146,9 +147,11 @@ class WelcomeUserType extends AbstractType
 }
 ```
 
+#### The OptionsResolver
 If the above seems alien to you, you might want to get yourself familiar with the [OptionsResolver](https://github.com/symfony/options-resolver) package first.
 To summarize, the changes made above make sure that whenever your `Mailer` class sends a message, it must have this `to` option passed along with it.
 
+### Done!
 That's it, all that's left is to update your code to use the new `to` option:
 ```php
 // before..

@@ -9,6 +9,11 @@ use CL\Mailer\Message\Header\AddressInterface;
 class Header implements HeaderInterface
 {
     /**
+     * @var AddressInterface|null
+     */
+    private $sender;
+
+    /**
      * @var AddressInterface[]
      */
     private $from = [];
@@ -37,6 +42,22 @@ class Header implements HeaderInterface
      * @var string|null
      */
     private $subject;
+
+    /**
+     * @inheritdoc
+     */
+    public function setSender(AddressInterface $sender = null)
+    {
+        $this->sender = $sender;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSender(): ?AddressInterface
+    {
+        return $this->sender;
+    }
 
     /**
      * @inheritdoc

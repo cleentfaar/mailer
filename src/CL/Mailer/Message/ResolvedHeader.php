@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CL\Mailer\Message;
 
+use CL\Mailer\Message\Header\AddressInterface;
+
 class ResolvedHeader implements ResolvedHeaderInterface
 {
     /**
@@ -18,6 +20,11 @@ class ResolvedHeader implements ResolvedHeaderInterface
         HeaderInterface $header
     ) {
         $this->header = $header;
+    }
+
+    public function getSender(): ?AddressInterface
+    {
+        return $this->header->getSender();
     }
 
     /**

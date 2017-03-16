@@ -9,6 +9,11 @@ use CL\Mailer\Message\Header\AddressInterface;
 interface ResolvedHeaderInterface
 {
     /**
+     * @return AddressInterface|null
+     */
+    public function getSender(): ?AddressInterface;
+
+    /**
      * @return AddressInterface[]
      */
     public function getFrom(): array;

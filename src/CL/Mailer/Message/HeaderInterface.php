@@ -9,6 +9,16 @@ use CL\Mailer\Message\Header\AddressInterface;
 interface HeaderInterface
 {
     /**
+     * @param AddressInterface|null $sender
+     */
+    public function setSender(AddressInterface $sender = null);
+
+    /**
+     * @return AddressInterface|null
+     */
+    public function getSender(): ?AddressInterface;
+
+    /**
      * @param AddressInterface $from
      */
     public function addFrom(AddressInterface $from);
