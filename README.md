@@ -5,12 +5,28 @@
 [![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/cleentfaar/mailer.svg)]()
 [![Github All Releases](https://img.shields.io/github/downloads/cleentfaar/mailer/total.svg)]()
 
+
+### Installation
+
+The recommended way to install Mailer is through [Composer](http://getcomposer.org).
+
+```bash
+php composer.phar require cleentfaar/mailer
+```
+
+After installing, you need to require Composer's autoloader:
+
+```php
+require 'vendor/autoload.php';
+```
+
+
 ### Table of contents
-1. [Introduction](docs/introduction.md)
-1. [Installation](docs/installation.md)
+
 1. [Getting started](docs/getting-started.md)
 1. [Advanced usage](docs/advanced-usage.md)
 1. [Contributing](docs/contributing.md)
+
 
 ### Packages depending on this library
 
