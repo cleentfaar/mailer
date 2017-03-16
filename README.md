@@ -13,8 +13,9 @@
 
 ### Packages depending on this library
 
-These packages depend
+The following packages depend on this library:
+
 | Package | Description |
-| :- | :- |
-| [mailer-swiftmailer](https://github.com/cleentfaar/mailer-swiftmailer) | Driver that implements the Swiftmailer engine |
+| :------ | :---------- |
+| [mailer-swiftmailer](https://github.com/cleentfaar/mailer-swiftmailer) (driver) | Driver that implements the Swiftmailer engine (recommended) |
 | [mailer-bundle](https://github.com/cleentfaar/mailer-bundle) | Symfony bundle that let's you use the Mailer library in your Symfony projects |
