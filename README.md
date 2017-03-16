@@ -21,10 +21,9 @@ require 'vendor/autoload.php';
 ```
 
 
-### Table of contents
+### Documentation
 
 1. [Getting started](docs/getting-started.md)
-1. [Advanced usage](docs/advanced-usage.md)
 1. [Contributing](docs/contributing.md)
 
 
