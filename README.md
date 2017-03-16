@@ -6,10 +6,10 @@
 [![Github All Releases](https://img.shields.io/github/downloads/cleentfaar/mailer/total.svg)]()
 
 ### Table of contents
-1. [Introduction](tree/master/docs/introduction.md)
-1. [Installation](tree/master/docs/installation.md)
-1. [Getting started](tree/master/docs/getting-started.md)
-1. [Contributing](tree/master/docs/contributing.md)
+1. [Introduction](docs/introduction.md)
+1. [Installation](docs/installation.md)
+1. [Getting started](docs/getting-started.md)
+1. [Contributing](docs/contributing.md)
 
 ### Packages depending on this library
 
