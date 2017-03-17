@@ -55,6 +55,20 @@ class MessageResolver implements MessageResolverInterface
 
         $type->buildMessage($builder, $this->translator, $this->templating, $options);
 
+        return $this->resolveFromBuilder($builder);
+    }
+
+    /**
+     * Creates a resolved message from a given builder.
+     *
+     * This method can be used to make generic changes to all messages sent through this resolver
+     *
+     * @param MessageBuilderInterface $builder
+     *
+     * @return ResolvedMessageInterface
+     */
+    protected function resolveFromBuilder(MessageBuilderInterface $builder) : ResolvedMessageInterface
+    {
         return ResolvedMessage::fromBuilder($builder);
     }
 }

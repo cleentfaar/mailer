@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CL\Mailer\Message\Part;
 
-use Pelago\Emogrifier;
-
 class HtmlPart implements PartInterface
 {
     /**
@@ -21,18 +19,9 @@ class HtmlPart implements PartInterface
     /**
      * @param string      $content
      * @param string|null $charset
-     * @param string|null $pathToCss
      */
-    public function __construct(string $content, string $charset = null, string $pathToCss = null)
+    public function __construct(string $content, string $charset = null)
     {
-        if ($pathToCss !== null) {
-            $emogrifier = new Emogrifier();
-            $emogrifier->setCss(file_get_contents($pathToCss));
-            $emogrifier->setHtml($content);
-
-            $content = $emogrifier->emogrify();
-        }
-
         $this->content = $content;
         $this->charset = $charset;
     }
@@ -48,16 +37,16 @@ class HtmlPart implements PartInterface
     /**
      * @inheritdoc
      */
-    public function getCharset(): ?string
+    public function getContentType() : string
     {
-        return $this->charset;
+        return 'text/html';
     }
 
     /**
      * @inheritdoc
      */
-    public function getContentType(): string
+    public function getCharset() : ?string
     {
-        return 'text/html';
+        return $this->charset;
     }
 }
