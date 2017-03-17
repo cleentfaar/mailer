@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CL\Mailer\Message\Body\Part;
+namespace CL\Mailer\Message\Part;
 
-class PlainTextPart implements PartInterface
+class HtmlPart implements PartInterface
 {
     /**
      * @var string
@@ -37,15 +37,15 @@ class PlainTextPart implements PartInterface
     /**
      * @inheritdoc
      */
-    public function getContentType(): string
+    public function getContentType() : string
     {
-        return 'text/plain';
+        return 'text/html';
     }
 
     /**
      * @inheritdoc
      */
-    public function getCharset(): ?string
+    public function getCharset() : ?string
     {
         return $this->charset;
     }

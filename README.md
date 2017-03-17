@@ -24,6 +24,7 @@ require 'vendor/autoload.php';
 ### Documentation
 
 1. [Getting started](docs/getting-started.md)
+1. [Templating](docs/templating.md)
 1. [Contributing](docs/contributing.md)
 
 

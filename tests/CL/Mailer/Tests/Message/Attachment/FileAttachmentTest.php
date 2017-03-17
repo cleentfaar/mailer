@@ -1,8 +1,8 @@
 <?php
 
-namespace CL\Mailer\Tests\Message\Body\Attachment;
+namespace CL\Mailer\Tests\Message\Attachment;
 
-use CL\Mailer\Message\Body\Attachment\FileAttachment;
+use CL\Mailer\Message\Attachment\FileAttachment;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\HttpFoundation\File\File;

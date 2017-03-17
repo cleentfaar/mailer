@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 abstract class AbstractType implements TypeInterface
 {
     /**
-     * @param OptionsResolver $optionsResolver
+     * @inheritdoc
      */
     public function configureOptions(OptionsResolver $optionsResolver)
     {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CL\Mailer\Message\Header;
+namespace CL\Mailer\Message;
 
 class Address implements AddressInterface
 {

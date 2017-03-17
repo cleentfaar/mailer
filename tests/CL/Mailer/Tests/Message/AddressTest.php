@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CL\Mailer\Tests\Message\Header;
+namespace CL\Mailer\Tests\Message;
 
-use CL\Mailer\Message\Header\Address;
+use CL\Mailer\Message\Address;
 use PHPUnit\Framework\TestCase;
 
 class AddressTest extends TestCase

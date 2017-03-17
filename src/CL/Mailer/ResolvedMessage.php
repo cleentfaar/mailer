@@ -4,64 +4,177 @@ declare(strict_types=1);
 
 namespace CL\Mailer;
 
-use CL\Mailer\Message\BodyInterface;
-use CL\Mailer\Message\HeaderInterface;
-use CL\Mailer\Message\ResolvedBody;
-use CL\Mailer\Message\ResolvedBodyInterface;
-use CL\Mailer\Message\ResolvedHeader;
-use CL\Mailer\Message\ResolvedHeaderInterface;
+use CL\Mailer\Message\AddressInterface;
 
 class ResolvedMessage implements ResolvedMessageInterface
 {
     /**
-     * @var ResolvedHeaderInterface
+     * @var array
      */
-    private $header;
+    private $from;
 
     /**
-     * @var ResolvedBodyInterface
+     * @var AddressInterface|null
      */
-    private $body;
+    private $sender;
 
     /**
-     * @param ResolvedHeaderInterface $header
-     * @param ResolvedBodyInterface   $body
+     * @var null|string
      */
-    private function __construct(
-        ResolvedHeaderInterface $header,
-        ResolvedBodyInterface $body
+    private $subject;
+
+    /**
+     * @var array
+     */
+    private $to;
+
+    /**
+     * @var array
+     */
+    private $cc;
+
+    /**
+     * @var array
+     */
+    private $bcc;
+
+    /**
+     * @var array
+     */
+    private $replyTo;
+
+    /**
+     * @var array
+     */
+    private $parts;
+
+    /**
+     * @var array
+     */
+    private $attachments;
+
+    /**
+     * @param array                 $from
+     * @param AddressInterface|null $sender
+     * @param string|null           $subject
+     * @param array                 $to
+     * @param array                 $cc
+     * @param array                 $bcc
+     * @param array                 $replyTo
+     * @param array                 $parts
+     * @param array                 $attachments
+     */
+    public function __construct(
+        array $from,
+        AddressInterface $sender = null,
+        string $subject = null,
+        array $to,
+        array $cc = [],
+        array $bcc = [],
+        array $replyTo = [],
+        array $parts = [],
+        array $attachments = []
     ) {
-        $this->header = $header;
-        $this->body = $body;
+        $this->from = $from;
+        $this->sender = $sender;
+        $this->subject = $subject;
+        $this->to = $to;
+        $this->cc = $cc;
+        $this->bcc = $bcc;
+        $this->replyTo = $replyTo;
+        $this->parts = $parts;
+        $this->attachments = $attachments;
     }
 
     /**
-     * @param HeaderInterface $header
-     * @param BodyInterface   $body
+     * @param MessageBuilderInterface $builder
      *
-     * @return ResolvedMessageInterface
+     * @return self
      */
-    public static function fromHeaderAndBody(HeaderInterface $header, BodyInterface $body): ResolvedMessageInterface
+    public static function fromBuilder(MessageBuilderInterface $builder) : self
     {
-        $resolvedHeader = new ResolvedHeader($header);
-        $resolvedBody = new ResolvedBody($body);
-
-        return new static($resolvedHeader, $resolvedBody);
+        return new self(
+            $builder->getFrom(),
+            $builder->getSender(),
+            $builder->getSubject(),
+            $builder->getTo(),
+            $builder->getCc(),
+            $builder->getBcc(),
+            $builder->getReplyTo(),
+            $builder->getParts(),
+            $builder->getAttachments()
+        );
     }
 
     /**
      * @inheritdoc
      */
-    public function getHeader(): ResolvedHeaderInterface
+    public function getFrom(): array
     {
-        return $this->header;
+        return $this->from;
     }
 
     /**
      * @inheritdoc
      */
-    public function getBody(): ResolvedBodyInterface
+    public function getSender(): ?AddressInterface
     {
-        return $this->body;
+        return $this->sender;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSubject(): ?string
+    {
+        return $this->subject;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTo(): array
+    {
+        return $this->to;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCc(): array
+    {
+        return $this->cc;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getBcc(): array
+    {
+        return $this->bcc;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getReplyTo(): array
+    {
+        return $this->replyTo;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getParts(): array
+    {
+        return $this->parts;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAttachments(): array
+    {
+        return $this->attachments;
     }
 }

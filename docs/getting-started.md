@@ -9,49 +9,36 @@ First, we create class implementing `TypeInterface`, or in our (simplified) case
 
 ```php
 <?php
+    
+namespace AppBundle\Mailer\Type;
 
-namespace Acme\Mailer\Type;
-
-use CL\Mailer\AbstractType;
-use CL\Mailer\Message\BodyInterface;
-use CL\Mailer\Message\HeaderInterface;
-use CL\Mailer\Message\Header\Address;
-use CL\Mailer\Message\Body\Attachment\FileAttachment;
-use CL\Mailer\Message\Body\Part\HtmlPart;
-use CL\Mailer\Message\Body\Part\PlainTextPart;
-use Symfony\Component\HttpFoundation\File\File;
+use CL\Mailer\Message\Address;
+use CL\Mailer\Message\Part\HtmlPart;
+use CL\Mailer\Message\Part\PlainTextPart;
+use CL\Mailer\MessageBuilderInterface;
+use CL\Mailer\TypeInterface;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class WelcomeUserType extends AbstractType
+class DemoType implements TypeInterface
 {
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
-    public function buildHeader(HeaderInterface $header, TranslatorInterface $translator, array $options)
-    {
-        $header->addTo(new Address('john@doe.com', 'John Doe'));
-        
-        $header->setSender(new Address('support@acme.com', 'Acme Support'));
-        
-        // example of using translation for subjects
-        $header->setSubject($translator->trans('welcome_user.subject', [], 'mail'));
-    }
+    public function buildMessage(
+        MessageBuilderInterface $builder, 
+        TranslatorInterface $translator, 
+        EngineInterface $templating, 
+        array $options
+    ) {
+        $builder->setSender(new Address('support@acme.com', 'Acme Support'));
+        $builder->addTo(new Address('john@doe.com', 'John Doe'));
+        $builder->setSubject($translator->trans('demo.subject', [], 'mail'));
 
-    /**
-     * @inheritdoc 
-     */        
-    public function buildBody(BodyInterface $body, EngineInterface $templating, array $options)
-    {
-        $body->setMainPart(new HtmlPart($templating->render('acme/mails/welcome_user.html.twig')));
-        
-        // optionally, you may want to provide a
-        // plain-text version of your email
-        $body->setAlternativePart(new PlainTextPart($templating->render('acme/mails/welcome_user.txt.twig')));
-        
-        // optionally, you may want to add an attachment
-        $attachment = new FileAttachment(new File('/path/to/attachment')); 
-        $body->addAttachment($attachment);
+        $context = [];
+
+        $builder->addPart(new HtmlPart($templating->render('mails/demo.html.twig', $context)));
+        $builder->addPart(new PlainTextPart($templating->render('mails/demo.txt.twig', $context)));
     }
 }
 
@@ -59,7 +46,7 @@ class WelcomeUserType extends AbstractType
 
 ### Send an email using your type
 
-Having created our welcome type, we want to send it using a driver of our choice.
+Having created our type, we want to send it using a driver of our choice.
 In theory, you could do all that yourself, by simply creating a class 
 that implements `MailerInterface`.
 
@@ -74,14 +61,14 @@ Here's how:
 namespace Acme\Web;
 
 use Acme\Mailer\Driver\MyDriver;
-use Acme\Mailer\Type\WelcomeUserType;
+use Acme\Mailer\Type\DemoType;
 use CL\Mailer\Mailer;
 use CL\Mailer\MessageResolver;
 use CL\Mailer\TypeRegistry;
 
-// bootstrapping, you only need to do this once in your script
+// bootstrapping, you only need to do this once in your application
 $driver = new MyDriver();
-$type = new WelcomeUserType();
+$type = new DemoType();
 
 $registry = new TypeRegistry();
 $registry->register($type);
@@ -90,7 +77,7 @@ $resolver = new MessageResolver($registry);
 
 // sending the actual message
 $mailer = new Mailer($resolver, $driver);
-$mailer->send(WelcomeUserType::class);
+$mailer->send(DemoType::class);
 ```
 
 ### Configuring options
@@ -101,7 +88,7 @@ created earlier, we hardcoded the destination address:
 ```php
 // ...
 
-$header->addTo(new Address('john@doe.com', 'John Doe'));
+$builder->addTo(new Address('john@doe.com', 'John Doe'));
 
 // ...
 ```
@@ -115,34 +102,44 @@ Let's implement another method in our type class, namely `configureOptions`:
 
 ```php
 <?php
+    
+namespace AppBundle\Mailer\Type;
 
-namespace Acme\Mailer\Type;
-
-use CL\Mailer\AbstractType;
-use CL\Mailer\Message\HeaderInterface;
-use CL\Mailer\Message\Header\Address;
+use CL\Mailer\Message\Address;
+use CL\Mailer\Message\Part\HtmlPart;
+use CL\Mailer\Message\Part\PlainTextPart;
+use CL\Mailer\MessageBuilderInterface;
+use CL\Mailer\TypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class WelcomeUserType extends AbstractType
+class DemoType implements TypeInterface
 {
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
-    public function buildHeader(HeaderInterface $header, TranslatorInterface $translator, array $options)
-    {
-        $header->addTo($options['to']);
-        
+    public function buildMessage(
+        MessageBuilderInterface $builder, 
+        TranslatorInterface $translator, 
+        EngineInterface $templating, 
+        array $options
+    ) {
+        // ...
+        $builder->addTo($options['to']);
         // ...
     }
-    
+
     /**
-     * @inheritdoc 
+     * @inheritdoc
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $optionsResolver)
     {
-        $resolver->setRequired(['to']);
-        $resolver->setAllowedTypes('to', [Address::class]);
+        $optionsResolver->setRequired([
+            'to',
+        ]);
+
+        $optionsResolver->setAllowedTypes('to', Address::class);
     }
 }
 ```
@@ -156,12 +153,12 @@ That's it, all that's left is to update your code to use the new `to` option:
 ```php
 // before..
 $mailer->send(
-    WelcomeUserType::class
+    DemoType::class
 );
 
 // after...
 $mailer->send(
-    WelcomeUserType::class, 
+    DemoType::class, 
     [
         'to' => new Address($user->getEmail(), $user->getName())
     ]

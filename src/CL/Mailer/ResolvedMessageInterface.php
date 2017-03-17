@@ -2,18 +2,52 @@
 
 namespace CL\Mailer;
 
-use CL\Mailer\Message\ResolvedBodyInterface;
-use CL\Mailer\Message\ResolvedHeaderInterface;
+use CL\Mailer\Message\AddressInterface;
 
 interface ResolvedMessageInterface
 {
     /**
-     * @return ResolvedHeaderInterface
+     * @return AddressInterface[]
      */
-    public function getHeader(): ResolvedHeaderInterface;
+    public function getFrom(): array;
 
     /**
-     * @return ResolvedBodyInterface
+     * @return AddressInterface|null
      */
-    public function getBody(): ResolvedBodyInterface;
+    public function getSender(): ?AddressInterface;
+
+    /**
+     * @return string|null
+     */
+    public function getSubject(): ?string;
+
+    /**
+     * @return array
+     */
+    public function getTo(): array;
+
+    /**
+     * @return array
+     */
+    public function getCc(): array;
+
+    /**
+     * @return array
+     */
+    public function getBcc(): array;
+
+    /**
+     * @return array
+     */
+    public function getReplyTo(): array;
+
+    /**
+     * @return array
+     */
+    public function getParts(): array;
+
+    /**
+     * @return array
+     */
+    public function getAttachments(): array;
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CL\Mailer\Message\Body\Part;
+namespace CL\Mailer\Message\Part;
 
 interface PartInterface
 {

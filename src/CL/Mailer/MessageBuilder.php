@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
+namespace CL\Mailer;
 
-namespace CL\Mailer\Message;
+use CL\Mailer\Message\AddressInterface;
+use CL\Mailer\Message\Attachment\AttachmentInterface;
+use CL\Mailer\Message\Part\PartInterface;
 
-use CL\Mailer\Message\Header\AddressInterface;
-
-class Header implements HeaderInterface
+class MessageBuilder implements MessageBuilderInterface
 {
     /**
      * @var AddressInterface|null
@@ -42,6 +42,16 @@ class Header implements HeaderInterface
      * @var string|null
      */
     private $subject;
+
+    /**
+     * @var PartInterface[]
+     */
+    private $parts = [];
+
+    /**
+     * @var AttachmentInterface[]
+     */
+    private $attachments = [];
 
     /**
      * @inheritdoc
@@ -153,5 +163,37 @@ class Header implements HeaderInterface
     public function getSubject(): ?string
     {
         return $this->subject;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function addPart(PartInterface $part)
+    {
+        $this->parts[] = $part;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getParts(): array
+    {
+        return $this->parts;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function addAttachment(AttachmentInterface $attachment)
+    {
+        $this->attachments[] = $attachment;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAttachments(): array
+    {
+        return $this->attachments;
     }
 }

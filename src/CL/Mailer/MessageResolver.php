@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CL\Mailer;
 
-use CL\Mailer\Message\Body;
-use CL\Mailer\Message\Header;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -53,13 +51,10 @@ class MessageResolver implements MessageResolverInterface
         $type->configureOptions($resolver);
 
         $options = $resolver->resolve($options);
+        $builder = new MessageBuilder();
 
-        $header = new Header();
-        $body = new Body();
+        $type->buildMessage($builder, $this->translator, $this->templating, $options);
 
-        $type->buildHeader($header, $this->translator, $options);
-        $type->buildBody($body, $this->templating, $options);
-
-        return ResolvedMessage::fromHeaderAndBody($header, $body);
+        return ResolvedMessage::fromBuilder($builder);
     }
 }

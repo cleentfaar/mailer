@@ -1,6 +1,6 @@
 <?php
 
-namespace CL\Mailer\Message\Header;
+namespace CL\Mailer\Message;
 
 interface AddressInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace CL\Mailer\Message\Body\Attachment;
+namespace CL\Mailer\Message\Attachment;
 
 use Symfony\Component\HttpFoundation\File\File;
 

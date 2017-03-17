@@ -8,7 +8,7 @@ use CL\Mailer\Driver\DriverInterface;
 use CL\Mailer\Mailer;
 use CL\Mailer\MessageResolver;
 use CL\Mailer\MessageResolverInterface;
-use CL\Mailer\ResolvedMessage;
+use CL\Mailer\ResolvedMessageInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -53,7 +53,7 @@ class MailerTest extends TestCase
         $options = ['foo' => 'bar'];
         $result = true;
 
-        $resolvedMessage = $this->prophesize(ResolvedMessage::class);
+        $resolvedMessage = $this->prophesize(ResolvedMessageInterface::class);
 
         $this->messageResolver->resolve(self::TYPE, $options)
             ->shouldBeCalledTimes(1)

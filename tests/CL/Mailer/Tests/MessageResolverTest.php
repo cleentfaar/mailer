@@ -60,12 +60,11 @@ class MessageResolverTest extends TestCase
     public function it_can_resolve_a_message_from_the_given_type_and_options()
     {
         $type = self::MAILER_TYPE;
-        $options = [];
         $mailer = $this->prophesize(TypeInterface::class)->reveal();
 
         $this->registry->get(self::MAILER_TYPE)->shouldBeCalledTimes(1)->willReturn($mailer);
 
-        $resolvedMessage = $this->resolver->resolve($type, $options);
+        $resolvedMessage = $this->resolver->resolve($type, []);
 
         $this->assertInstanceOf(ResolvedMessage::class, $resolvedMessage);
     }
