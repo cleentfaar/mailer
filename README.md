@@ -35,3 +35,8 @@ The following packages depend on this library:
 | :------ | :---------- |
 | [mailer-swiftmailer](https://github.com/cleentfaar/mailer-swiftmailer) (driver) | Driver that implements the Swiftmailer engine (recommended) |
 | [mailer-bundle](https://github.com/cleentfaar/mailer-bundle) | Symfony bundle that let's you use the Mailer library in your Symfony projects |
+
+
+### Credits
+
+Thanks to [leemunroe](https://github.com/leemunroe) for his [HTML email template](https://github.com/leemunroe/responsive-html-email-template). I only modified it so it can be easily used by others.
