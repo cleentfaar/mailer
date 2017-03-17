@@ -3,6 +3,8 @@
 namespace CL\Mailer;
 
 use CL\Mailer\Message\AddressInterface;
+use CL\Mailer\Message\Attachment\AttachmentInterface;
+use CL\Mailer\Message\Part\PartInterface;
 
 interface ResolvedMessageInterface
 {
@@ -22,32 +24,32 @@ interface ResolvedMessageInterface
     public function getSubject(): ?string;
 
     /**
-     * @return array
+     * @return AddressInterface[]
      */
     public function getTo(): array;
 
     /**
-     * @return array
+     * @return AddressInterface[]
      */
     public function getCc(): array;
 
     /**
-     * @return array
+     * @return AddressInterface[]
      */
     public function getBcc(): array;
 
     /**
-     * @return array
+     * @return AddressInterface[]
      */
     public function getReplyTo(): array;
 
     /**
-     * @return array
+     * @return PartInterface[]
      */
     public function getParts(): array;
 
     /**
-     * @return array
+     * @return AttachmentInterface[]
      */
     public function getAttachments(): array;
 }
