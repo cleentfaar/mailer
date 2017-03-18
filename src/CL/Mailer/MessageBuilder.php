@@ -7,7 +7,6 @@ namespace CL\Mailer;
 use CL\Mailer\Message\AddressInterface;
 use CL\Mailer\Message\Attachment\AttachmentInterface;
 use CL\Mailer\Message\Part\PartInterface;
-use CL\Mailer\Message\SubjectInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MessageBuilder implements MessageBuilderInterface
@@ -43,7 +42,7 @@ class MessageBuilder implements MessageBuilderInterface
     private $replyTo = [];
 
     /**
-     * @var SubjectInterface|null
+     * @var string|null
      */
     private $subject;
 
@@ -177,7 +176,7 @@ class MessageBuilder implements MessageBuilderInterface
     /**
      * @inheritdoc
      */
-    public function setSubject(SubjectInterface $subject = null)
+    public function setSubject(string $subject = null)
     {
         $this->subject = $subject;
     }
@@ -185,7 +184,7 @@ class MessageBuilder implements MessageBuilderInterface
     /**
      * @inheritdoc
      */
-    public function getSubject(): ?SubjectInterface
+    public function getSubject(): ?string
     {
         return $this->subject;
     }

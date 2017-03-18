@@ -12,9 +12,9 @@ interface TypeRegistryInterface
     public function register(TypeInterface $type);
 
     /**
-     * @param string $type
+     * @param string $typeClass
      *
      * @return TypeInterface
      */
-    public function get(string $type): TypeInterface;
+    public function get(string $typeClass): TypeInterface;
 }

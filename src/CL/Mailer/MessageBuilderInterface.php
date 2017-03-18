@@ -72,14 +72,14 @@ interface MessageBuilderInterface
     public function getReplyTo(): array;
 
     /**
-     * @param SubjectInterface|null $subject
+     * @param string|null $subject
      */
-    public function setSubject(SubjectInterface $subject = null);
+    public function setSubject(string $subject = null);
 
     /**
-     * @return SubjectInterface|null
+     * @return string|null
      */
-    public function getSubject(): ?SubjectInterface;
+    public function getSubject(): ?string;
 
     /**
      * @param PartInterface $part

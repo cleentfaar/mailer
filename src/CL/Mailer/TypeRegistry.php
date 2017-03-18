@@ -26,16 +26,16 @@ class TypeRegistry implements TypeRegistryInterface
     /**
      * @inheritdoc
      */
-    public function get(string $type): TypeInterface
+    public function get(string $typeClass): TypeInterface
     {
-        if (!isset($this->types[$type])) {
+        if (!isset($this->types[$typeClass])) {
             throw new OutOfBoundsException(sprintf(
-                'There is no mailer type registered under that name: "%s" (available types are: "%s")',
-                $type,
+                'There is no type registered with that class: "%s" (available classes are: "%s")',
+                $typeClass,
                 implode('","', array_keys($this->types))
             ));
         }
 
-        return $this->types[$type];
+        return $this->types[$typeClass];
     }
 }

@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace CL\Mailer\Tests;
 
 use CL\Mailer\Mailer;
-use CL\Mailer\MessageResolver;
-use CL\Mailer\MessageResolverInterface;
 use CL\Mailer\ResolvedMessageInterface;
 use CL\Mailer\Test\Driver\InMemoryDriver;
 use CL\Mailer\TypeInterface;
-use CL\Mailer\TypeRegistry;
 use CL\Mailer\TypeRegistryInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -23,11 +20,6 @@ class MailerTest extends TestCase
      * @var Mailer
      */
     private $mailer;
-
-    /**
-     * @var ObjectProphecy|MessageResolverInterface
-     */
-    private $messageResolver;
 
     /**
      * @var InMemoryDriver

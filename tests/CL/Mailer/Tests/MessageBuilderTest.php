@@ -110,7 +110,7 @@ class MessageBuilderTest extends TestCase
      */
     public function it_can_return_the_expected_subject()
     {
-        $this->builder->setSubject($subject = new Subject('This is the subject'));
+        $this->builder->setSubject($subject = 'This is the subject');
 
         $this->assertSame($subject, $this->builder->getSubject());
     }
