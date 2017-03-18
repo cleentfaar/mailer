@@ -32,6 +32,7 @@
   },
   "autoload-dev": {
     "psr-4": {
+      "CL\\Mailer\\Test\\": "tests/CL/Mailer/Test",
       "CL\\Mailer\\Tests\\": "tests/CL/Mailer/Tests"
     }
   }

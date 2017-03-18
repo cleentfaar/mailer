@@ -8,6 +8,7 @@ use CL\Mailer\Message\AddressInterface;
 use CL\Mailer\Message\Attachment\AttachmentInterface;
 use CL\Mailer\Message\Part\PartInterface;
 use CL\Mailer\Message\SubjectInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MessageBuilder implements MessageBuilderInterface
 {
@@ -55,6 +56,27 @@ class MessageBuilder implements MessageBuilderInterface
      * @var AttachmentInterface[]
      */
     private $attachments = [];
+
+    /**
+     * @param TypeInterface $type
+     * @param array         $options
+     *
+     * @return self
+     */
+    public static function fromType(TypeInterface $type, array $options = []): self
+    {
+        $optionsResolver = new OptionsResolver();
+
+        $type->configureOptions($optionsResolver);
+
+        $options = $optionsResolver->resolve($options);
+
+        $builder = new self();
+
+        $type->buildMessage($builder, $options);
+
+        return $builder;
+    }
 
     /**
      * @inheritdoc

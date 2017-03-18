@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace CL\Mailer\Tests;
 
-use CL\Mailer\Driver\DriverInterface;
 use CL\Mailer\Mailer;
 use CL\Mailer\MessageResolver;
 use CL\Mailer\MessageResolverInterface;
 use CL\Mailer\ResolvedMessageInterface;
+use CL\Mailer\Test\Driver\InMemoryDriver;
+use CL\Mailer\TypeInterface;
+use CL\Mailer\TypeRegistry;
+use CL\Mailer\TypeRegistryInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -27,44 +30,44 @@ class MailerTest extends TestCase
     private $messageResolver;
 
     /**
-     * @var ObjectProphecy|DriverInterface
+     * @var InMemoryDriver
      */
     private $driver;
+
+    /**
+     * @var ObjectProphecy|TypeRegistryInterface
+     */
+    private $typeRegistry;
 
     /**
      * @inheritdoc
      */
     protected function setUp()
     {
-        $this->messageResolver = $this->prophesize(MessageResolver::class);
-        $this->driver = $this->prophesize(DriverInterface::class);
+        $this->typeRegistry = $this->prophesize(TypeRegistryInterface::class);
+        $this->driver = new InMemoryDriver();
 
         $this->mailer = new Mailer(
-            $this->messageResolver->reveal(),
-            $this->driver->reveal()
+            $this->typeRegistry->reveal(),
+            $this->driver
         );
     }
 
     /**
      * @test
      */
-    public function it_can_send_a_message_by_type_and_return_driver_result()
+    public function it_can_send_a_message_by_type()
     {
-        $options = ['foo' => 'bar'];
-        $result = true;
+        $type = $this->prophesize(TypeInterface::class);
+        $options = [];
 
-        $resolvedMessage = $this->prophesize(ResolvedMessageInterface::class);
+        $this->typeRegistry->get(self::TYPE)->willReturn($type);
 
-        $this->messageResolver->resolve(self::TYPE, $options)
-            ->shouldBeCalledTimes(1)
-            ->willReturn($resolvedMessage)
-        ;
+        $this->mailer->send(self::TYPE, $options);
 
-        $this->driver->send($resolvedMessage)
-            ->shouldBeCalledTimes(1)
-            ->willReturn($result)
-        ;
+        $messages = $this->driver->getMessagesSent();
 
-        $this->assertSame($result, $this->mailer->send(self::TYPE, $options));
+        self::assertCount(1, $messages);
+        self::assertInstanceOf(ResolvedMessageInterface::class, $messages[0]);
     }
 }

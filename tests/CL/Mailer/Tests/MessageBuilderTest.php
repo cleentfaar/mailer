@@ -7,7 +7,9 @@ namespace CL\Mailer\Tests;
 use CL\Mailer\Message\Address;
 use CL\Mailer\Message\Attachment\AttachmentInterface;
 use CL\Mailer\Message\Part\PartInterface;
+use CL\Mailer\Message\Subject;
 use CL\Mailer\MessageBuilder;
+use CL\Mailer\TypeInterface;
 use PHPUnit\Framework\TestCase;
 
 class MessageBuilderTest extends TestCase
@@ -23,6 +25,19 @@ class MessageBuilderTest extends TestCase
     protected function setUp()
     {
         $this->builder = new MessageBuilder();
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_constructed_from_a_given_type_and_options()
+    {
+        $options = [];
+        $type = $this->prophesize(TypeInterface::class);
+        $builder = MessageBuilder::fromType($type->reveal(), $options);
+        $type->buildMessage($builder, $options)->shouldBeCalled();
+
+        $this->assertInstanceOf(MessageBuilder::class, $builder);
     }
 
     /**
@@ -95,7 +110,7 @@ class MessageBuilderTest extends TestCase
      */
     public function it_can_return_the_expected_subject()
     {
-        $this->builder->setSubject($subject = 'This is the subject');
+        $this->builder->setSubject($subject = new Subject('This is the subject'));
 
         $this->assertSame($subject, $this->builder->getSubject());
     }
