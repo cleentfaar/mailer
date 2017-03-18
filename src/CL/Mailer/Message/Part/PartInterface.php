@@ -12,6 +12,11 @@ interface PartInterface
     public function getContent() : string;
 
     /**
+     * @param string $newContent
+     */
+    public function replaceContent(string $newContent);
+
+    /**
      * @return string
      */
     public function getContentType() : string;

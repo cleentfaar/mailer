@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CL\Mailer;
 
 interface MessageResolverInterface
 {
     /**
-     * @param string $type
-     * @param array  $options
+     * @param TypeInterface $type
+     * @param array         $options
      *
      * @return ResolvedMessageInterface
      */
-    public function resolve(string $type, array $options): ResolvedMessageInterface;
+    public function resolve(TypeInterface $type, array $options): ResolvedMessageInterface;
 }

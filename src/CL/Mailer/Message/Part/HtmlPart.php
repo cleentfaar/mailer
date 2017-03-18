@@ -37,6 +37,14 @@ class HtmlPart implements PartInterface
     /**
      * @inheritdoc
      */
+    public function replaceContent(string $newContent)
+    {
+        $this->content = $newContent;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getContentType() : string
     {
         return 'text/html';

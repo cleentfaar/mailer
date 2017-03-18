@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CL\Mailer;
 
 use CL\Mailer\Message\AddressInterface;
 use CL\Mailer\Message\Attachment\AttachmentInterface;
 use CL\Mailer\Message\Part\PartInterface;
+use CL\Mailer\Message\SubjectInterface;
 
 interface MessageBuilderInterface
 {
@@ -69,14 +72,14 @@ interface MessageBuilderInterface
     public function getReplyTo(): array;
 
     /**
-     * @param string $subject
+     * @param SubjectInterface|null $subject
      */
-    public function setSubject(string $subject);
+    public function setSubject(SubjectInterface $subject = null);
 
     /**
-     * @return string|null
+     * @return SubjectInterface|null
      */
-    public function getSubject(): ?string;
+    public function getSubject(): ?SubjectInterface;
 
     /**
      * @param PartInterface $part
@@ -84,9 +87,14 @@ interface MessageBuilderInterface
     public function addPart(PartInterface $part);
 
     /**
+     * @param PartInterface $part
+     */
+    public function removePart(PartInterface $part);
+
+    /**
      * @return PartInterface[]
      */
-    public function getParts() : array;
+    public function getParts(): array;
 
     /**
      * @param AttachmentInterface $attachment

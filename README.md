@@ -24,7 +24,7 @@ require 'vendor/autoload.php';
 ### Documentation
 
 1. [Getting started](docs/getting-started.md)
-1. [Templating](docs/templating.md)
+1. [Events](docs/templating.md)
 1. [Contributing](docs/contributing.md)
 
 
@@ -38,6 +38,6 @@ The following packages depend on this library:
 | [mailer-bundle](https://github.com/cleentfaar/mailer-bundle) | Symfony bundle that let's you use the Mailer library in your Symfony projects |
 
 
-### Credits
+### Suggested packages
 
-Thanks to [leemunroe](https://github.com/leemunroe) for his [HTML email template](https://github.com/leemunroe/responsive-html-email-template). I only modified it so it can be easily used by others.
+[leemunroe](https://github.com/leemunroe)'s [HTML email template](https://github.com/leemunroe/responsive-html-email-template) can be used as a base for your HTML templates.

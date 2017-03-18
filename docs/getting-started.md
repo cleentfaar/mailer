@@ -17,28 +17,19 @@ use CL\Mailer\Message\Part\HtmlPart;
 use CL\Mailer\Message\Part\PlainTextPart;
 use CL\Mailer\MessageBuilderInterface;
 use CL\Mailer\TypeInterface;
-use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class DemoType implements TypeInterface
 {
     /**
      * @inheritdoc
      */
-    public function buildMessage(
-        MessageBuilderInterface $builder, 
-        TranslatorInterface $translator, 
-        EngineInterface $templating, 
-        array $options
-    ) {
+    public function buildMessage(MessageBuilderInterface $builder, array $options)
+    {
         $builder->setSender(new Address('support@acme.com', 'Acme Support'));
         $builder->addTo(new Address('john@doe.com', 'John Doe'));
-        $builder->setSubject($translator->trans('demo.subject', [], 'mail'));
-
-        $context = [];
-
-        $builder->addPart(new HtmlPart($templating->render('mails/demo.html.twig', $context)));
-        $builder->addPart(new PlainTextPart($templating->render('mails/demo.txt.twig', $context)));
+        $builder->setSubject('Welcome to Acme!');
+        $builder->addPart(new HtmlPart('<h1>Welcome!</h1><p>Acme welcomes you!</p>'));
+        $builder->addPart(new PlainTextPart('Welcome! Acme welcomes you!'));
     }
 }
 
@@ -51,34 +42,35 @@ In theory, you could do all that yourself, by simply creating a class
 that implements `MailerInterface`.
 
 But, with some additional bootstrapping,  you can make sending many 
-different types of emails easy. 
+different types of emails easy.
 
-Here's how:
+To do this we will use the `Mailer` class supplied by this library that combines 
+all of this logic for you so you can use it throughout your application:
 
 ```php
 <?php
 
-namespace Acme\Web;
-
-use Acme\Mailer\Driver\MyDriver;
-use Acme\Mailer\Type\DemoType;
 use CL\Mailer\Mailer;
-use CL\Mailer\MessageResolver;
+use CL\Mailer\Driver\SwiftmailerDriver;
 use CL\Mailer\TypeRegistry;
+use Acme\Mailer\Type\DemoType;
 
-// bootstrapping, you only need to do this once in your application
-$driver = new MyDriver();
-$type = new DemoType();
-
+// bootstrapping; only need to do this once in your application
 $registry = new TypeRegistry();
-$registry->register($type);
+$registry->register(new DemoType());
+// $registry->register(...);
+// $registry->register(...);
 
-$resolver = new MessageResolver($registry);
+$driver = new SwiftmailerDriver();
+$mailer = new Mailer($registry, $driver);
 
-// sending the actual message
-$mailer = new Mailer($resolver, $driver);
+// actual usage in your scripts:
 $mailer->send(DemoType::class);
 ```
+
+>**NOTE:** The example above uses the `SwiftmailerDriver`, supplied by the [mailer-swiftmailer](https://github.com/cleentfaar/mailer-swiftmailer) package. 
+You are of course free to choose your own driver as long as it implements `DriverInterface`.
+
 
 ### Configuring options
 
@@ -106,25 +98,17 @@ Let's implement another method in our type class, namely `configureOptions`:
 namespace AppBundle\Mailer\Type;
 
 use CL\Mailer\Message\Address;
-use CL\Mailer\Message\Part\HtmlPart;
-use CL\Mailer\Message\Part\PlainTextPart;
 use CL\Mailer\MessageBuilderInterface;
 use CL\Mailer\TypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class DemoType implements TypeInterface
 {
     /**
      * @inheritdoc
      */
-    public function buildMessage(
-        MessageBuilderInterface $builder, 
-        TranslatorInterface $translator, 
-        EngineInterface $templating, 
-        array $options
-    ) {
+    public function buildMessage(MessageBuilderInterface $builder, array $options)
+    {
         // ...
         $builder->addTo($options['to']);
         // ...
@@ -151,16 +135,11 @@ To summarize, the changes made above make sure that whenever your `Mailer` class
 ### Done!
 That's it, all that's left is to update your code to use the new `to` option:
 ```php
-// before..
-$mailer->send(
-    DemoType::class
-);
+// before...
+$mailer->send(DemoType::class);
 
 // after...
-$mailer->send(
-    DemoType::class, 
-    [
-        'to' => new Address($user->getEmail(), $user->getName())
-    ]
-);
+$mailer->send(DemoType::class, [
+    'to' => new Address($user->getEmail(), $user->getName())
+]);
 ```

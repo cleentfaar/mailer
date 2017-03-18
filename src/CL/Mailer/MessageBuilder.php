@@ -1,22 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CL\Mailer;
 
 use CL\Mailer\Message\AddressInterface;
 use CL\Mailer\Message\Attachment\AttachmentInterface;
 use CL\Mailer\Message\Part\PartInterface;
+use CL\Mailer\Message\SubjectInterface;
 
 class MessageBuilder implements MessageBuilderInterface
 {
     /**
-     * @var AddressInterface|null
-     */
-    private $sender;
-
-    /**
      * @var AddressInterface[]
      */
     private $from = [];
+
+    /**
+     * @var AddressInterface|null
+     */
+    private $sender;
 
     /**
      * @var AddressInterface[]
@@ -39,7 +42,7 @@ class MessageBuilder implements MessageBuilderInterface
     private $replyTo = [];
 
     /**
-     * @var string|null
+     * @var SubjectInterface|null
      */
     private $subject;
 
@@ -56,22 +59,6 @@ class MessageBuilder implements MessageBuilderInterface
     /**
      * @inheritdoc
      */
-    public function setSender(AddressInterface $sender = null)
-    {
-        $this->sender = $sender;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getSender(): ?AddressInterface
-    {
-        return $this->sender;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function addFrom(AddressInterface $address)
     {
         $this->from[] = $address;
@@ -83,6 +70,22 @@ class MessageBuilder implements MessageBuilderInterface
     public function getFrom(): array
     {
         return $this->from;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setSender(AddressInterface $sender = null)
+    {
+        $this->sender = $sender;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSender(): ?AddressInterface
+    {
+        return $this->sender;
     }
 
     /**
@@ -152,7 +155,7 @@ class MessageBuilder implements MessageBuilderInterface
     /**
      * @inheritdoc
      */
-    public function setSubject(string $subject = null)
+    public function setSubject(SubjectInterface $subject = null)
     {
         $this->subject = $subject;
     }
@@ -160,7 +163,7 @@ class MessageBuilder implements MessageBuilderInterface
     /**
      * @inheritdoc
      */
-    public function getSubject(): ?string
+    public function getSubject(): ?SubjectInterface
     {
         return $this->subject;
     }
@@ -171,6 +174,20 @@ class MessageBuilder implements MessageBuilderInterface
     public function addPart(PartInterface $part)
     {
         $this->parts[] = $part;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function removePart(PartInterface $part)
+    {
+        $key = array_search($part, $this->parts, true);
+
+        if ($key === false ) {
+            throw new \OutOfBoundsException('That part has not yet been added to the builder yet');
+        }
+
+        unset($this->parts[$key]);
     }
 
     /**

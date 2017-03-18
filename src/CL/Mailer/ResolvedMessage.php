@@ -11,6 +11,11 @@ class ResolvedMessage implements ResolvedMessageInterface
     /**
      * @var array
      */
+    private $to;
+
+    /**
+     * @var array
+     */
     private $from;
 
     /**
@@ -19,14 +24,9 @@ class ResolvedMessage implements ResolvedMessageInterface
     private $sender;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     private $subject;
-
-    /**
-     * @var array
-     */
-    private $to;
 
     /**
      * @var array
@@ -65,10 +65,10 @@ class ResolvedMessage implements ResolvedMessageInterface
      * @param array                 $attachments
      */
     public function __construct(
-        array $from,
+        array $to,
+        array $from = [],
         AddressInterface $sender = null,
         string $subject = null,
-        array $to,
         array $cc = [],
         array $bcc = [],
         array $replyTo = [],
@@ -94,16 +94,24 @@ class ResolvedMessage implements ResolvedMessageInterface
     public static function fromBuilder(MessageBuilderInterface $builder) : self
     {
         return new self(
+            $builder->getTo(),
             $builder->getFrom(),
             $builder->getSender(),
-            $builder->getSubject(),
-            $builder->getTo(),
+            $builder->getSubject()->getContent(),
             $builder->getCc(),
             $builder->getBcc(),
             $builder->getReplyTo(),
             $builder->getParts(),
             $builder->getAttachments()
         );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTo(): array
+    {
+        return $this->to;
     }
 
     /**
@@ -128,14 +136,6 @@ class ResolvedMessage implements ResolvedMessageInterface
     public function getSubject(): ?string
     {
         return $this->subject;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getTo(): array
-    {
-        return $this->to;
     }
 
     /**

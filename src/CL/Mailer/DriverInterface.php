@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CL\Mailer\Driver;
-
-use CL\Mailer\ResolvedMessageInterface;
+namespace CL\Mailer;
 
 interface DriverInterface
 {
