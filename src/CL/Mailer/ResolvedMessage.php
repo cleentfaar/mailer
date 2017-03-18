@@ -97,7 +97,7 @@ class ResolvedMessage implements ResolvedMessageInterface
             $builder->getTo(),
             $builder->getFrom(),
             $builder->getSender(),
-            $builder->getSubject(),
+            $builder->getSubject() ? $builder->getSubject()->getContent() : null,
             $builder->getCc(),
             $builder->getBcc(),
             $builder->getReplyTo(),
