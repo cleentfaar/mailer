@@ -105,7 +105,6 @@ $eventDispatcher->addListener(Events::EVENT_TYPE_BUILT, new MailerTemplatingList
 // pass the dispatcher to the Mailer class
 $mailer = new Mailer(
     $typeRegistry,
-    $messageResolver,
     $driver,
     $eventDispatcher
 );
